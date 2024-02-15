@@ -25,10 +25,16 @@ class User extends BaseController{
 
     }
 
-    public function get_friends($user_id){
+    public function get_friends($user_id = NULL){
 
         // Creo la session
-        session()->set('user_id', $user_id);
+        //session()->set('user_id', $user_id);
+
+        $user_id = session()->get('user_id');
+
+        if(!$user_id){
+           return redirect()->to('auth/login');
+        };
 
         $friends = $this->userModel->where('id !=',$user_id) -> findall();
         $data['friends'] = $friends;
